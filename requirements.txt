@@ -1,0 +1,42 @@
+Need to get input from user
+
+Target machine ip address (pdst)
+Target machine macaddress (hwdst)
+Gateway input - ip (psrc) - soure ip is the router ip can get from running route -n
+arp op=2 - response (as opposed to request)
+
+run a network scan and show the possible computers to Target
+need to get the network ip address
+all the user to select the target machine and
+
+
+>>> scapy.ls(scapy.ARP)
+hwtype     : XShortEnumField                     = ('1')
+ptype      : XShortEnumField                     = ('2048')
+hwlen      : FieldLenField                       = ('None')
+plen       : FieldLenField                       = ('None')
+op         : ShortEnumField                      = ('1')
+hwsrc      : MultipleTypeField (SourceMACField, StrFixedLenField) = ('None')
+psrc       : MultipleTypeField (SourceIPField, SourceIP6Field, StrFixedLenField) = ('None')
+hwdst      : MultipleTypeField (MACField, StrFixedLenField) = ('None')
+pdst       : MultipleTypeField (IPField, IP6Field, StrFixedLenField) = ('None')
+
+
+
+text for arp spoofing home page
+
+ARP Spoofer
+
+ARP spoofing is a technique by which an attacker sends fake Address Resolution Protocol (ARP) messages onto a local area network. This is often done to link the attacker’s MAC address with the IP address of a legitimate computer or server on the network, enabling the attacker to intercept, modify, or block data.
+
+This application demonstrates ARP spoofing for educational and security testing purposes only. Unauthorized use is strictly prohibited.
+How to Use the ARP Spoofer
+
+    Detect Gateway: Click "Detect Gateway" to find the IP and MAC address of your network gateway.
+    Scan Network: Click "Scan Network" to identify devices on your network.
+    Select Target: Choose a target device from the scan results for spoofing.
+    Start Spoofing: Click "Start Spoofing" to initiate spoofing.
+    Stop Spoofing: Click "Stop Spoofing" to end the spoofing process.
+    When stop is clicked run the restore function to reset the source and target ip and mac addresses
+
+Warning: Use this tool responsibly and only in environments where you have explicit permission to test.
